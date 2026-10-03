@@ -148,25 +148,25 @@ export default function Hero({ doctorData, onOpenAppointment, onOpenCV }) {
                 <span>OPD Open Today</span>
               </div>
 
-              {/* FLOATING BADGE 2 (Bottom Right): 4.9 Star Rating & Patients */}
-              <div className="absolute bottom-6 -right-3 sm:-right-6 z-20 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xl flex items-center gap-3 text-left">
-                <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-500">
-                  <Star className="w-5 h-5 fill-current" />
+              {/* FLOATING BADGE 2 (Side of Photo): 4.9 Star Rating & Patients */}
+              <div className="absolute top-1/2 -translate-y-4 -right-2 sm:-right-8 z-20 bg-white p-2.5 sm:p-3 rounded-2xl border border-slate-200 shadow-xl flex items-center gap-2.5 text-left">
+                <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500 shrink-0">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-1 font-extrabold text-slate-900 text-sm">
+                  <div className="flex items-center gap-1 font-extrabold text-slate-900 text-xs sm:text-sm">
                     <span>4.9 / 5.0</span>
                   </div>
-                  <p className="text-[11px] text-slate-500 font-medium">
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium whitespace-nowrap">
                     Verified Patient Rating
                   </p>
                 </div>
               </div>
 
               {/* FLOATING BADGE 3 (Top Right): PMC Verified Crest */}
-              <div className="absolute top-16 -right-4 z-20 p-2.5 rounded-2xl bg-gradient-to-r from-sky-500 to-emerald-500 text-white shadow-xl flex items-center gap-2 text-xs font-bold">
-                <ShieldCheck className="w-4 h-4" />
-                <span>PMC Verified</span>
+              <div className="absolute top-4 -right-2 sm:-right-5 z-20 p-2 sm:p-2.5 rounded-2xl bg-gradient-to-r from-sky-500 to-emerald-500 text-white shadow-xl flex items-center gap-1.5 sm:gap-2 text-xs font-bold">
+                <ShieldCheck className="w-4 h-4 shrink-0" />
+                <span className="whitespace-nowrap">PMC Verified</span>
               </div>
 
             </div>

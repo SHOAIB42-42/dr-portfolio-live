@@ -1,5 +1,5 @@
 // Dr. Farooq Portfolio v1.0.1 - Vercel Live Build
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { presetDoctors } from './data/presetDoctors';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -15,7 +15,6 @@ import CVModal from './components/CVModal';
 import AdminPanel from './components/AdminPanel';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import Footer from './components/Footer';
-import { Sliders } from 'lucide-react';
 
 export default function App() {
   const [activeDoctor, setActiveDoctor] = useState(presetDoctors[0]);
@@ -24,6 +23,31 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [initialService, setInitialService] = useState('');
   const [initialLocation, setInitialLocation] = useState('');
+
+  // Secret Admin Access (Ctrl + Shift + A OR #admin in URL)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setIsAdminOpen((prev) => !prev);
+      }
+    };
+
+    const checkSecretUrl = () => {
+      if (window.location.hash === '#admin' || window.location.search.includes('admin=true')) {
+        setIsAdminOpen(true);
+      }
+    };
+
+    checkSecretUrl();
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('hashchange', checkSecretUrl);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('hashchange', checkSecretUrl);
+    };
+  }, []);
 
   const handleOpenAppointment = (serviceOrLocation = '') => {
     if (serviceOrLocation) {
@@ -113,22 +137,6 @@ export default function App() {
 
       {/* Floating WhatsApp Button (Bottom Right) */}
       <FloatingWhatsApp doctorData={activeDoctor} />
-
-      {/* Floating Super Admin Panel Trigger (Bottom Left) */}
-      <div className="fixed bottom-6 left-6 z-40 no-print flex items-center gap-2">
-        <button
-          onClick={() => setIsAdminOpen(!isAdminOpen)}
-          className="inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-teal-400 font-bold text-xs shadow-2xl border border-slate-700/80 transition-all hover:scale-105 active:scale-95 group"
-        >
-          <div className="p-1.5 rounded-xl bg-teal-500/20 text-teal-400 group-hover:rotate-45 transition-transform">
-            <Sliders className="w-4 h-4" />
-          </div>
-          <span>Super Admin Generator</span>
-          <span className="px-2 py-0.5 rounded-full bg-teal-500/20 text-[10px] text-teal-300 font-extrabold uppercase">
-            Live
-          </span>
-        </button>
-      </div>
 
     </div>
   );
