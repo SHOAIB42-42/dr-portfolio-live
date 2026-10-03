@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, MapPin, User, Phone, Send, MessageSquare, CheckCircle } from 'lucide-react';
+import { X, Calendar, MapPin, User, Phone, MessageSquare, CheckCircle } from 'lucide-react';
 
 export default function AppointmentModal({ doctorData, isOpen, onClose, initialService = '', initialLocation = '' }) {
   const [formData, setFormData] = useState({
@@ -16,14 +16,29 @@ export default function AppointmentModal({ doctorData, isOpen, onClose, initialS
 
   if (!isOpen) return null;
 
+  const getWhatsAppMessage = () => {
+    return `🩺 *NEW APPOINTMENT BOOKING REQUEST*
+━━━━━━━━━━━━━━━━━━━━━━
+👤 *Patient Name:* ${formData.patientName}
+📞 *Contact Number:* ${formData.phone}
+🏥 *Clinic Location:* ${formData.location}
+🩺 *Specialist Service:* ${formData.service}
+📅 *Preferred Date:* ${formData.date}
+⏰ *Time Slot:* ${formData.slot}
+${formData.notes ? `📝 *Symptoms / Notes:* ${formData.notes}\n` : ''}━━━━━━━━━━━━━━━━━━━━━━
+🌐 *Booked via Official Website:* https://iamdrfarooq.site`;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const message = getWhatsAppMessage();
+    const whatsappUrl = `https://wa.me/${doctorData.contact.whatsapp}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
     setSubmitted(true);
   };
 
   const handleWhatsAppSend = () => {
-    const message = `Hello ${doctorData.name},\n\nI would like to request an appointment.\n\n*Patient Name:* ${formData.patientName}\n*Phone:* ${formData.phone}\n*Hospital Location:* ${formData.location}\n*Preferred Date:* ${formData.date}\n*Time Slot:* ${formData.slot}\n*Service Required:* ${formData.service}\n${formData.notes ? `*Medical Notes:* ${formData.notes}` : ''}`;
-    
+    const message = getWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${doctorData.contact.whatsapp}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -58,9 +73,9 @@ export default function AppointmentModal({ doctorData, isOpen, onClose, initialS
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                 <CheckCircle className="w-10 h-10" />
               </div>
-              <h4 className="text-2xl font-bold text-slate-900">Appointment Request Ready!</h4>
+              <h4 className="text-2xl font-bold text-slate-900">WhatsApp Chat Opened!</h4>
               <p className="text-slate-600 text-sm max-w-md mx-auto">
-                Click below to send your appointment details directly to {doctorData.name}'s clinic WhatsApp for instant confirmation.
+                Your appointment details have been prepared for <strong>{doctorData.name}</strong>. If WhatsApp did not open automatically, click the button below:
               </p>
               <div className="pt-4 flex flex-col gap-3 max-w-xs mx-auto">
                 <button
@@ -68,11 +83,17 @@ export default function AppointmentModal({ doctorData, isOpen, onClose, initialS
                   className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg"
                 >
                   <MessageSquare className="w-5 h-5" />
-                  <span>Send via WhatsApp</span>
+                  <span>Re-open WhatsApp</span>
+                </button>
+                <button
+                  onClick={onClose}
+                  className="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 transition-colors"
+                >
+                  Close
                 </button>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="text-xs text-slate-500 hover:underline"
+                  className="text-xs text-slate-400 hover:underline"
                 >
                   Edit Appointment Info
                 </button>
@@ -186,11 +207,14 @@ export default function AppointmentModal({ doctorData, isOpen, onClose, initialS
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 via-teal-500 to-emerald-500 hover:from-sky-600 hover:to-emerald-600 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm shadow-xl shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2.5"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Proceed to Confirm Appointment</span>
+                  <MessageSquare className="w-5 h-5" />
+                  <span>Send Appointment Request to Doctor's WhatsApp</span>
                 </button>
+                <p className="text-center text-[11px] text-slate-500 mt-2 font-medium">
+                  Direct WhatsApp chat will open with Dr. Farooq (+92 309 8382775) with all booking details pre-filled.
+                </p>
               </div>
 
             </form>
